@@ -1,5 +1,14 @@
 {
-  "name": "my-app",
+  "name": "ARtistus.dev",
+  "description": "React-based ARtistus.dev website art gallery showcasing 3D artworks using Three.js",
+  "author": "ARtistus.dev Team",
+  "keywords": [
+    "react",
+    "three.js",
+    "art gallery",
+    "3D artworks",
+    "ARtistus.dev"
+  ],
   "version": "0.1.0",
   "private": true,
   "dependencies": {
