@@ -1,28 +1,60 @@
-import React, { useRef, useState } from 'react';
-import './App.css';
-import { useFrame, type ThreeElements } from '@react-three/fiber';
-import type { Mesh } from 'three';
-function App ( props: ThreeElements['mesh'] ) {
-  const meshRef = useRef<Mesh>( null! );
-  const [hovered, setHover] = useState( false );
-  const [active, setActive] = useState( false );
-  useFrame( ( state, delta ) => ( meshRef.current.rotation.x += delta ) );
+import {
+  Bounds,
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
+import { Canvas, extend } from "@react-three/fiber";
 
+import * as THREE from "three/webgpu";
+import { MeshBasicNodeMaterial, MeshStandardNodeMaterial } from "three/webgpu";
+
+import { Model } from "./Model";
+
+extend( { MeshBasicNodeMaterial, MeshStandardNodeMaterial } );
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      meshBasicNodeMaterial: MeshBasicNodeMaterial;
+      meshStandardNodeMaterial: MeshStandardNodeMaterial;
+    }
+  }
+}
+
+function Thing () {
+  return <Model />;
+}
+
+export default function App () {
   return (
     <>
-      <mesh
-        { ...props }
-        ref={ meshRef }
-        scale={ active ? 1.5 : 1 }
-        onClick={ () => setActive( !active ) }
-        onPointerOver={ () => setHover( true ) }
-        onPointerOut={ () => setHover( false ) }>
-        <boxGeometry args={ [1, 1, 1] } />
-        <meshStandardMaterial color={ hovered ? 'hotpink' : '#2f74c0' } />
-      </mesh>
+      <Canvas
+        gl={ async ( props ) => {
+          const renderer = new THREE.WebGPURenderer( props as any );
+          await renderer.init();
+          return renderer;
+        } }
+        camera={ { fov: 50, position: [0, 300, -85] } }
+        onCreated={ ( state ) => {
+          state.setSize( window.innerWidth, window.innerHeight );
+        } }
+      >
+        <OrbitControls makeDefault autoRotate />
+        <PerspectiveCamera position={ [2, 1, 2] } makeDefault />
 
+        <Environment
+          background
+          preset='sunset'
+          blur={ 0.4 }
+        />
+        <ambientLight intensity={ 0.5 } />
+
+        <Bounds fit clip observe margin={ 1.3 }>
+          <Thing />
+        </Bounds>
+      </Canvas>
     </>
   );
 }
-
-export default App;
