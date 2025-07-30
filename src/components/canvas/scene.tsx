@@ -35,13 +35,12 @@ export default function App () {
           await renderer.init();
           return renderer;
         } }
-        camera={ { fov: 50, position: [0, 300, -85] } }
         onCreated={ ( state ) => {
           state.setSize( window.innerWidth, window.innerHeight );
         } }
       >
         <OrbitControls makeDefault autoRotate />
-        <PerspectiveCamera position={ [2, 1, 2] } makeDefault />
+        <PerspectiveCamera position={ [2, 1, 2] } fov={ 50 } makeDefault />
 
         <Environment
           background
