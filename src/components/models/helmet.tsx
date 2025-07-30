@@ -19,3 +19,5 @@ export function Model () {
         </group>
     );
 }
+useGLTF.preload( "./helmet.glb" );
+export default Model;

@@ -6,10 +6,9 @@ import {
 } from "@react-three/drei";
 import { Canvas, extend } from "@react-three/fiber";
 
-import * as THREE from "three/webgpu";
-import { MeshBasicNodeMaterial, MeshStandardNodeMaterial } from "three/webgpu";
+import { MeshBasicNodeMaterial, MeshStandardNodeMaterial, WebGPURenderer } from "three/webgpu";
 
-import { Model } from "./Model";
+import { Model } from "../models/helmet";
 
 extend( { MeshBasicNodeMaterial, MeshStandardNodeMaterial } );
 
@@ -32,7 +31,7 @@ export default function App () {
     <>
       <Canvas
         gl={ async ( props ) => {
-          const renderer = new THREE.WebGPURenderer( props as any );
+          const renderer = new WebGPURenderer( props as any );
           await renderer.init();
           return renderer;
         } }
